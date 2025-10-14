@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Tránsito</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="screen active">
+        <div class="login-container">
+            <div class="login-header">
+                <i class="fas fa-traffic-light"></i>
+                <h1>Sistema de Tránsito</h1>
+                <p>Ingrese sus credenciales</p>
+            </div>
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="username"><i class="fas fa-user"></i> Usuario</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-lock"></i> Contraseña</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                </button>
+            </form>
+            <div id="loginMessage" class="message"></div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="screen">
+        <header class="header">
+            <div class="header-left">
+                <i class="fas fa-traffic-light"></i>
+                <h1>Sistema de Tránsito</h1>
+            </div>
+            <div class="header-right">
+                <span id="userWelcome">Bienvenido, Admin</span>
+                <button id="logoutBtn" class="btn btn-secondary">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </button>
+            </div>
+        </header>
+
+        <nav class="sidebar">
+            <ul class="nav-menu">
+                <li class="nav-item active" data-tab="dashboard-tab">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </li>
+                <li class="nav-item" data-tab="vehiculos-tab">
+                    <i class="fas fa-car"></i> Vehículos
+                </li>
+                <li class="nav-item" data-tab="infracciones-tab">
+                    <i class="fas fa-clipboard-list"></i> Infracciones
+                </li>
+                <li class="nav-item" data-tab="reportes-tab">
+                    <i class="fas fa-chart-bar"></i> Reportes
+                </li>
+                <li class="nav-item admin-only" data-tab="admin-tab">
+                    <i class="fas fa-cog"></i> Administración
+                </li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <!-- Dashboard Tab -->
+            <div id="dashboard-tab" class="tab-content active">
+                <h2>Dashboard Principal</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="fas fa-car"></i>
+                        <div class="stat-info">
+                            <h3 id="totalVehiculos">0</h3>
+                            <p>Vehículos Registrados</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-clipboard-list"></i>
+                        <div class="stat-info">
+                            <h3 id="totalInfracciones">0</h3>
+                            <p>Infracciones Activas</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-users"></i>
+                        <div class="stat-info">
+                            <h3 id="totalUsuarios">0</h3>
+                            <p>Usuarios del Sistema</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vehículos Tab -->
+            <div id="vehiculos-tab" class="tab-content">
+                <div class="tab-header">
+                    <h2>Gestión de Vehículos</h2>
+                    <button id="nuevoVehiculoBtn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Nuevo Vehículo
+                    </button>
+                </div>
+
+                <!-- Filtros de búsqueda -->
+                <div class="filters-container">
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label for="filterPatente">Patente:</label>
+                            <input type="text" id="filterPatente" placeholder="Buscar por patente...">
+                        </div>
+                        <div class="filter-group">
+                            <label for="filterMarca">Marca:</label>
+                            <input type="text" id="filterMarca" placeholder="Buscar por marca...">
+                        </div>
+                        <div class="filter-group">
+                            <label for="filterPropietario">Propietario:</label>
+                            <input type="text" id="filterPropietario" placeholder="Buscar por propietario...">
+                        </div>
+                        <button id="buscarVehiculosBtn" class="btn btn-primary">
+                            <i class="fas fa-search"></i> Buscar
+                        </button>
+                        <button id="limpiarFiltrosVehiculosBtn" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Limpiar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table id="vehiculosTable" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Patente</th>
+                                <th>Tipo</th>
+                                <th>Marca</th>
+                                <th>Modelo</th>
+                                <th>Color</th>
+                                <th>N° Motor</th>
+                                <th>N° Chasis</th>
+                                <th>Propietario</th>
+                                <th>Documentación</th>
+                                <th>Seguro</th>
+                                <th>Fecha Registro</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="vehiculosTableBody">
+                            <!-- Los vehículos se cargarán aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Otras pestañas... -->
+        </main>
+    </div>
+
+    <!-- Modal para nuevo vehículo -->
+<div id="vehiculoModal" class="modal">
+    <div class="modal-content" style="max-width: 900px;">
+        <div class="modal-header">
+            <h3 id="modalTitle">Nuevo Vehículo</h3>
+            <span class="close">&times;</span>
+        </div>
+        <form id="vehiculoForm" class="modal-form">
+            <!-- Primera fila: Datos básicos -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="patente">Patente *</label>
+                    <input type="text" id="patente" name="patente" required>
+                    <small class="help-text">Ej: ABC123, CD456EF</small>
+                </div>
+                <div class="form-group">
+                    <label for="tipo_vehiculo">Tipo de Vehículo *</label>
+                    <select id="tipo_vehiculo" name="tipo_vehiculo" required>
+                        <option value="">Seleccionar...</option>
+                        <option value="auto">Auto</option>
+                        <option value="camion">Camión</option>
+                        <option value="moto">Moto</option>
+                        <option value="bicicleta">Bicicleta</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Segunda fila: Marca, Modelo, Color -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="marca">Marca</label>
+                    <input type="text" id="marca" name="marca" placeholder="Ej: Toyota, Ford">
+                </div>
+                <div class="form-group">
+                    <label for="modelo">Modelo</label>
+                    <input type="text" id="modelo" name="modelo" placeholder="Ej: Corolla, Fiesta">
+                </div>
+                <div class="form-group">
+                    <label for="color">Color</label>
+                    <input type="text" id="color" name="color" placeholder="Ej: Rojo, Azul">
+                </div>
+            </div>
+
+            <!-- Tercera fila: Números de identificación -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="numero_motor">Número de Motor</label>
+                    <input type="text" id="numero_motor" name="numero_motor" placeholder="Número único del motor">
+                </div>
+                <div class="form-group">
+                    <label for="numero_chasis">Número de Chasis</label>
+                    <input type="text" id="numero_chasis" name="numero_chasis" placeholder="Número único del chasis">
+                </div>
+            </div>
+
+            <!-- Cuarta fila: Documentación -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="cedula_verde">Cédula Verde</label>
+                    <input type="text" id="cedula_verde" name="cedula_verde" placeholder="Número de cédula verde">
+                </div>
+                <div class="form-group">
+                    <label for="titulo_registro">Título de Registro</label>
+                    <input type="text" id="titulo_registro" name="titulo_registro" placeholder="Número de título">
+                </div>
+            </div>
+
+            <!-- Quinta fila: Propietario -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="propietario_dni">DNI del Propietario</label>
+                    <input type="text" id="propietario_dni" name="propietario_dni" placeholder="DNI del propietario registrado">
+                    <small class="help-text">El propietario debe estar previamente registrado en el sistema</small>
+                </div>
+            </div>
+
+            <!-- Sexta fila: Seguro -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="seguro_activo">Seguro Activo</label>
+                    <select id="seguro_activo" name="seguro_activo">
+                        <option value="false">No</option>
+                        <option value="true">Sí</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="compañia_seguro">Compañía de Seguro</label>
+                    <input type="text" id="compañia_seguro" name="compañia_seguro" placeholder="Nombre de la aseguradora">
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" id="cancelBtn">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Guardar Vehículo</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Modal para ver detalles del vehículo -->
+<div id="detalleVehiculoModal" class="modal">
+    <div class="modal-content" style="max-width: 700px;">
+        <div class="modal-header">
+            <h3>Detalles del Vehículo</h3>
+            <span class="close" data-modal="detalleVehiculoModal">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div id="detalleVehiculoContent">
+                <!-- Los detalles se cargarán aquí -->
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="button" class="btn btn-secondary" data-modal="detalleVehiculoModal">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmación para eliminar -->
+<div id="confirmarEliminarModal" class="modal">
+    <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-header">
+            <h3>Confirmar Eliminación</h3>
+            <span class="close" data-modal="confirmarEliminarModal">&times;</span>
+        </div>
+        <div class="modal-body">
+            <p id="confirmarEliminarText">¿Estás seguro de que deseas eliminar este vehículo?</p>
+            <p class="warning-text"><strong>⚠️ Esta acción no se puede deshacer.</strong></p>
+        </div>
+        <div class="form-actions">
+            <button type="button" class="btn btn-secondary" data-modal="confirmarEliminarModal">Cancelar</button>
+            <button type="button" class="btn btn-danger" id="confirmarEliminarBtn">Sí, Eliminar</button>
+        </div>
+    </div>
+</div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
