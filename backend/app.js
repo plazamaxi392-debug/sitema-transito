@@ -40,10 +40,18 @@ app.use(express.urlencoded({ extended: true }));
 // Importar rutas
 const authRoutes = require('./routes/auth');
 const vehiculosRoutes = require('./routes/vehiculos');
+const propietariosRoutes = require('./routes/propietarios');
+const infraccionesRoutes = require('./routes/infracciones');
+const reportesRoutes = require('./routes/reportes');
+const dashboardRoutes = require('./routes/dashboard');
 
 // Usar rutas
 app.use('/api/auth', authRoutes);
 app.use('/api/vehiculos', vehiculosRoutes);
+app.use('/api/propietarios', propietariosRoutes);
+app.use('/api/infracciones', infraccionesRoutes);
+app.use('/api/reportes', reportesRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 // Rutas básicas
 app.get('/', (req, res) => {
